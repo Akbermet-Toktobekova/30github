@@ -1,17 +1,14 @@
-public class RemoveDups {
-
-    public int removeDups(int[] arr) {
-        if (arr == null) {
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if (nums == null) {
             return 0;
         }
-
-        if (arr.length == 0) {
-            return 0; // Or 1, depending on the desired behavior for an empty array
-        }
-      
+        int start = 0;
         int cnt = 1;
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i - 1] != arr[i]) {
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i - 1] != nums[i]) {
+               start++;
+                nums[start] = nums[i]; 
                 cnt++;
             }
         }
