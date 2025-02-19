@@ -1,15 +1,14 @@
 class Solution:
     def mergeAlternately(self, word1: str, word2: str) -> str:
-        i, j = 0 , 0
-        c = []
-        while i < len(word1) or j < len(word2):
-            if i < len(word1):
-                c.append(word1[i])
-                i +=1
-            if j < len(word2):
-                c.append(word2[j])
-                j +=1
-        return ''.join(c)
+        res = ""
+        l1 = len(word1)
+        l2 = len(word2)
+        for i in range( max(l1,l2)):
+            if i < l1:
+                res += word1[i]
+            if i < l2:
+                res += word2[i]
+        return res
     
 def main():
     word1 = "abc"
