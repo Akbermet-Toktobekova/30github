@@ -6,7 +6,7 @@ class Solution:
             if (min > prices[i]) :
                 min = prices[i]
             res = max(res, prices[i] - min)
-        return res
+        return res, int
 
 
         
