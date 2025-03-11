@@ -15,7 +15,6 @@ public class Book {
     private String genre;
     private int year;
     private int copyCount;
-    private int totalBorrowed;
     private int damage;
 
     public Book(String title, String author, String genre, int year, int copyCount) {
@@ -24,7 +23,6 @@ public class Book {
         this.genre = genre;
         this.year = year;
         this.copyCount = copyCount;
-        this.totalBorrowed = 0;
         this.damage = 0; 
     }
 
@@ -32,43 +30,47 @@ public class Book {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getAuthor() {
         return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getGenre() {
         return genre;
     }
 
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
     public int getYear() {
         return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public int getCopyCount() {
         return copyCount;
     }
 
-    public int getTotalBorrowed() {
-        return totalBorrowed;
+    public void setCopyCount(int copyCount) {
+        this.copyCount = copyCount;
     }
 
-    public void borrow() {
-        if (copyCount > 0) {
-            copyCount--;
-            totalBorrowed++;
-            damage++; 
-        }
+    public int getDamage() {
+        return damage;
     }
-    // when the book is borrowed copyCount will decrease, 
-    // number of borrowed books will increase and the damage will also increase
 
-    public void returnBook() {
-        copyCount++;
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
-    // when the book is returned then the number of copies increases
-
-    public boolean isDamaged() {
-        return damage > 20; 
-    }
-    // is the book was borrowed more than 20 times then the damage > 20, if so - the book is damaged
 }
