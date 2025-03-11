@@ -27,118 +27,113 @@ public class Library {
     }
 
     public void addBook(Book book) {
-        books.add(book);
+        books.add(book); // Add the given book to the books list
     }
-    // we simple add the given book to the books list
-   
+    
 
     public void removeDamagedBooks() {
         List<Book> goodBooks = new ArrayList<>();
         for (Book book : books) {
-            if (!book.isDamaged()) {
-                goodBooks.add(book);
+            if (book.getDamage() < 20) {
+                goodBooks.add(book); // Keep the book if it is not damaged
             } else {
-                damagedBooksCount++; 
+                damagedBooksCount++; // Increment damaged books count
             }
         }
-        books = goodBooks; 
+        books = goodBooks; // Update the books list with only good books
     }
-    // since we are iterating through books in a list, we should simple remove the book as it will cause index error
-    // therefore we create a new List of "goodBooks" and assign it's results to the initial list
-    
 
     public void borrowBook(String title) {
-        // if the count of copies is > 0 then we borrow a book with the given title
+        // If the count of copies is > 0, borrow the book with the given title
         for (Book book : books) {
             if (book.getTitle().equals(title) && book.getCopyCount() > 0) {
-                book.borrow();
-                totalBorrowedBooks++;
-                
-                        // Filling in the info for the stats
-                
-                // if there is no such title given we put a (title, 0) pair,
-                // if there is such title, then we put the value incremented by 1
-                borrowedBooks.put(title, borrowedBooks.getOrDefault(title, 0) + 1);
+                book.setCopyCount(book.getCopyCount()-1); // Decrease available copies
+                book.setDamage(book.getDamage()+1); // Increment the damage count
 
-                // same process for the genre stats
+                // Filling in statistics for the current book
+                borrowedBooks.put(title, borrowedBooks.getOrDefault(title, 0) + 1);
                 genreStats.put(book.getGenre(), genreStats.getOrDefault(book.getGenre(), 0) + 1);
+
+                totalBorrowedBooks++; // Increment total borrowed books in the library
 
                 return; // Stop after borrowing the first available copy
             }
         }
-        // If no book was borrowed, we can log a message
+        // If no book was borrowed, log the message
         System.out.println("The book '" + title + "' is not available for borrowing.");
     }
 
     public void returnBook(String title) {
+        // Return the borrowed book by increasing the copy count
         for (Book book : books) {
             if (book.getTitle().equals(title)) {
-                book.returnBook();
+                book.setCopyCount(book.getCopyCount() + 1);
                 return;
             }
         }
     }
-    // to return a book we call the returnBook method from the Book class
 
     public Book getMostBorrowedBook() {
         if (books.isEmpty()) {
-            return null;
+            return null; // Return null if no books are available
         }
         Book maxBook = books.get(0);
         for (Book book : books) {
-            if (book.getTotalBorrowed() > maxBook.getTotalBorrowed()) {
-                maxBook = book;
+            if (book.getDamage() > maxBook.getDamage()) {
+                maxBook = book; // Update maxBook if the current book has more damage (more borrowed)
             }
         }
-        return maxBook;
+        return maxBook; // Return the book with the highest borrow count
     }
-    // if the books list is not empty, we create a maxBook and 
-    // compare it with the current book's borrow number and do the max search
 
     public List<Book> searchByAuthor(String author) {
         List<Book> authorBooks = new ArrayList<>();
         for (Book book : books) {
             if (book.getAuthor().equals(author)) {
-                authorBooks.add(book);
+                authorBooks.add(book); // Add books by the given author
             }
         }
-        return authorBooks;
+        return authorBooks; // Return the list of books by the author
     }
-    // we create authorBooks to store the books, where the current book's author is the same with the given author
 
     public List<Book> searchByGenre(String genre) {
         List<Book> genreBooks = new ArrayList<>();
         for (Book book : books) {
             if (book.getGenre().equals(genre)) {
-                genreBooks.add(book);
+                genreBooks.add(book); // Add books of the given genre
             }
         }
-        return genreBooks;
+        return genreBooks; // Return the list of books in the specified genre
     }
-    // same as author, but for genre
 
-    
     public void trackBorrowingTrends() {
         System.out.println("Borrowing Trends:");
         for (Map.Entry<String, Integer> entry : borrowedBooks.entrySet()) {
             System.out.println("Book: " + entry.getKey() + " | Borrowed: " + entry.getValue() + " times");
         }
     }
-    // Tracking the borrowing trends - frequency of borrowing for each book
 
-    
     public List<String> getPopularGenres() {
         List<String> popularGenres = new ArrayList<>();
         List<Map.Entry<String, Integer>> genreList = new ArrayList<>(genreStats.entrySet());
-        genreList.sort((a, b) -> b.getValue().compareTo(a.getValue())); // Sort in descending order
+        genreList.sort((a, b) -> b.getValue().compareTo(a.getValue())); // Sort genres in descending order based on borrow count
 
         for (Map.Entry<String, Integer> entry : genreList) {
-            popularGenres.add(entry.getKey());
+            popularGenres.add(entry.getKey()); // Add genre names to the list of popular genres
         }
 
-        return popularGenres;
+        return popularGenres; // Return the sorted list of popular genres
     }
-    // We create a list of genres - popularGenres, 
-    // then sort the genreStats map entries in descending order based on their values, 
-    // and then adds the genre names (keys) to the popularGenres list before returning it.
+// We create a list of genres - popularGenres, 
+// then sort the genreStats map entries in descending order based on their values, 
+// and then adds the genre names (keys) to the popularGenres list before returning it.
+
+    public int getTotalBorrowedBooks() {
+        return totalBorrowedBooks; // Return the total count of borrowed books in the library
+    }
+    
+    public int getDamagedBooksCount() {
+        return damagedBooksCount; // Return the total count of damaged books in the library
+    }
+    
 }
