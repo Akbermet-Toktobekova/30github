@@ -9,75 +9,74 @@ package library;
  * @author akbermettoktobekova
  */
 
-
 public class Main {
+
     public static void main(String[] args) {
+        // Create a new library
         Library library = new Library();
 
-        // Adding 10 books with some shared properties
-        Book book1 = new Book("The Alchemist", "Paulo Coelho", "Fiction", 1988, 3);
-        Book book2 = new Book("Sapiens", "Yuval Noah Harari", "History", 2011, 2);
-        Book book3 = new Book("The Great Gatsby", "F. Scott Fitzgerald", "Classic", 1925, 4);
-        Book book4 = new Book("1984", "George Orwell", "Dystopian", 1949, 5);
-        Book book5 = new Book("Brida", "Paulo Coelho", "Fiction", 1990, 3);
-        Book book6 = new Book("Homo Deus", "Yuval Noah Harari", "History", 2016, 2);
-        Book book7 = new Book("Animal Farm", "George Orwell", "Dystopian", 1945, 4);
-        Book book8 = new Book("Pride and Prejudice", "Jane Austen", "Classic", 1813, 3);
-        Book book9 = new Book("To Kill a Mockingbird", "Harper Lee", "Classic", 1960, 5);
-        Book book10 = new Book("The Catcher in the Rye", "J.D. Salinger", "Fiction", 1951, 3);
+        // Create some books and add them to the library
+        Book book1 = new Book("The Great Gatsby", "F. Scott Fitzgerald", "Fiction", 1925, 5);
+        Book book2 = new Book("1984", "George Orwell", "Dystopia", 1949, 3);
+        Book book3 = new Book("To Kill a Mockingbird", "Harper Lee", "Fiction", 1960, 2);
 
-        // Adding books to the library
         library.addBook(book1);
         library.addBook(book2);
         library.addBook(book3);
-        library.addBook(book4);
-        library.addBook(book5);
-        library.addBook(book6);
-        library.addBook(book7);
-        library.addBook(book8);
-        library.addBook(book9);
-        library.addBook(book10);
 
-        // Borrowing books multiple times
-        library.borrowBook("The Alchemist");
-        library.borrowBook("The Alchemist");
-        library.borrowBook("Sapiens");
+        // Borrow some books
+        System.out.println("Borrowing 'The Great Gatsby'...");
+        library.borrowBook("The Great Gatsby");
+        System.out.println("Copies left of 'The Great Gatsby': " + book1.getCopyCount());
+
+        System.out.println("Borrowing '1984'...");
         library.borrowBook("1984");
-        library.borrowBook("1984");
-        library.borrowBook("1984");
-        library.borrowBook("Animal Farm");
-        library.borrowBook("Animal Farm");
-        library.borrowBook("Pride and Prejudice");
-        library.borrowBook("To Kill a Mockingbird");
-        library.borrowBook("The Catcher in the Rye");
-        library.borrowBook("The Catcher in the Rye");
+        System.out.println("Copies left of '1984': " + book2.getCopyCount());
 
-        // Returning a book
-        library.returnBook("The Alchemist");
-        library.returnBook("1984");
+        // Try borrowing a book that's not available
+        System.out.println("Trying to borrow a book that's not in the library...");
+        library.borrowBook("Non-existent Book");
 
-        // Checking the most borrowed book
-        Book mostBorrowed = library.getMostBorrowedBook();
-        if (mostBorrowed != null) {
-            System.out.println("Most borrowed book: " + mostBorrowed.getTitle() + " (" + mostBorrowed.getTotalBorrowed() + " times)");
-        }
+        // Return a book
+        System.out.println("Returning 'The Great Gatsby'...");
+        library.returnBook("The Great Gatsby");
+        System.out.println("Copies left of 'The Great Gatsby': " + book1.getCopyCount());
 
-        // Searching for books by author
-        System.out.println("Books by Paulo Coelho: " + library.searchByAuthor("Paulo Coelho"));
-        System.out.println("Books by George Orwell: " + library.searchByAuthor("George Orwell"));
-
-        // Searching for books by genre
-        System.out.println("Dystopian books: " + library.searchByGenre("Dystopian"));
-        System.out.println("Classic books: " + library.searchByGenre("Classic"));
-
-        // Tracking borrowing trends
+        // Track borrowing trends
         library.trackBorrowingTrends();
 
-        // Checking popular genres
-        System.out.println("Popular genres: " + library.getPopularGenres());
+        // Get the most borrowed book
+        Book mostBorrowed = library.getMostBorrowedBook();
+        if (mostBorrowed != null) {
+            System.out.println("Most Borrowed Book: " + mostBorrowed.getTitle());
+        } else {
+            System.out.println("No books have been borrowed yet.");
+        }
 
-        // Checking and removing damaged books
+        // Search by author
+        System.out.println("Searching books by George Orwell...");
+        library.searchByAuthor("George Orwell").forEach(book -> 
+            System.out.println("Found book: " + book.getTitle())
+        );
+
+        // Search by genre
+        System.out.println("Searching books in the 'Fiction' genre...");
+        library.searchByGenre("Fiction").forEach(book -> 
+            System.out.println("Found book: " + book.getTitle())
+        );
+
+        // Get popular genres
+        System.out.println("Popular Genres:");
+        library.getPopularGenres().forEach(genre -> 
+            System.out.println(genre)
+        );
+
+        // Remove damaged books (let's assume "The Great Gatsby" is damaged)
+        book1.setDamage(25);
         library.removeDamagedBooks();
-        System.out.println("Damaged books removed and the library is updated.");
+        System.out.println("Remaining books after removing damaged ones:");
+        library.searchByGenre("Fiction").forEach(book -> 
+            System.out.println("Remaining book: " + book.getTitle())
+        );
     }
 }
